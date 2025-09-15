@@ -1,8 +1,10 @@
-//<div class="toast-body">提示消息</div>
-axios.defaluts.baseURl='https://hmajax.itheima.net/'
-const toast_Com = new bootstrap.Toast(document.querySelector('.my-toast'))
-// console.log(toast_Com);
-function Alert(msg) {
-  const message= document.querySelector('.toast-body').innerText=msg
-  toast_Com.show(message)
+// 抽取轻提示函数
+axios.defaults.baseURL = 'https://hmajax.itheima.net'
+function showToast(msg) {
+  const toastDom = document.querySelector('.my-toast')
+  // 实例化toast组件
+  const toast = new bootstrap.Toast(toastDom)
+  // 修改内容并显示
+  document.querySelector('.toast-body').innerText = msg
+  toast.show()
 }
