@@ -8,3 +8,24 @@ function showToast(msg) {
   document.querySelector('.toast-body').innerText = msg
   toast.show()
 }
+
+function loginIf() {
+  const token = localStorage.getItem('token')
+  console.log(token);
+  if (!token) {
+    showToast('请先登录')
+    setTimeout(e => {
+      location.href='./login.html'
+    },1500)
+  }
+}
+//Authorization
+axios.interceptors.request.use(function (config) {
+  console.log(config);
+  const token = localStorage.getItem('token')
+  if(token)
+  config.headers['Authorization'] = token
+  return config
+}, function (error) {
+  return Promise.reject(error)
+})
