@@ -10,11 +10,13 @@ async function getData() {
   const { year } = res.data.data
   const { salaryData } = res.data.data
   const { groupData }=res.data.data
+  const { provinceData }=res.data.data
   console.log(res);
   lineRender(year)
   pieRender(salaryData)
   groupRender(groupData)
   genderRender(salaryData)
+  provinceRender(provinceData)
   console.log(salaryData);
   const name={ label }=salaryData
   console.log(name);
@@ -320,3 +322,118 @@ function genderRender(salaryData){
     ],
   })
 }
+ function provinceRender(provinceData){
+  const dom = document.querySelector('#map')
+  const myEchart = echarts.init(dom)
+  const dataList = [
+    { name: '南海诸岛', value: 0 },
+    { name: '北京', value: 0 },
+    { name: '天津', value: 0 },
+    { name: '上海', value: 0 },
+    { name: '重庆', value: 0 },
+    { name: '河北', value: 0 },
+    { name: '河南', value: 0 },
+    { name: '云南', value: 0 },
+    { name: '辽宁', value: 0 },
+    { name: '黑龙江', value: 0 },
+    { name: '湖南', value: 0 },
+    { name: '安徽', value: 0 },
+    { name: '山东', value: 0 },
+    { name: '新疆', value: 0 },
+    { name: '江苏', value: 0 },
+    { name: '浙江', value: 0 },
+    { name: '江西', value: 0 },
+    { name: '湖北', value: 0 },
+    { name: '广西', value: 0 },
+    { name: '甘肃', value: 0 },
+    { name: '山西', value: 0 },
+    { name: '内蒙古', value: 0 },
+    { name: '陕西', value: 0 },
+    { name: '吉林', value: 0 },
+    { name: '福建', value: 0 },
+    { name: '贵州', value: 0 },
+    { name: '广东', value: 0 },
+    { name: '青海', value: 0 },
+    { name: '西藏', value: 0 },
+    { name: '四川', value: 0 },
+    { name: '宁夏', value: 0 },
+    { name: '海南', value: 0 },
+    { name: '台湾', value: 0 },
+    { name: '香港', value: 0 },
+    { name: '澳门', value: 0 },
+   ]
+   dataList.forEach(ele => {
+    const res= provinceData.find(item => {
+      return item.name.includes(ele.name)
+    })
+     console.log(res);
+     if(res) ele.value=res.value
+  })
+  const option = {
+    title: {
+      text: '籍贯分布',
+      top: 10,
+      left: 10,
+      textStyle: {
+        fontSize: 16,
+      },
+    },
+    tooltip: {
+      trigger: 'item',
+      formatter: '{b}: {c} 位学员',
+      borderColor: 'transparent',
+      backgroundColor: 'rgba(0,0,0,0.5)',
+      textStyle: {
+        color: '#fff',
+      },
+    },
+    visualMap: {
+      min: 0,
+      max: 6,
+      left: 'left',
+      bottom: '20',
+      text: ['6', '0'],
+      inRange: {
+        color: ['#ffffff', '#0075F0'],
+      },
+      show: true,
+      left: 40,
+    },
+    geo: {
+      map: 'china',
+      roam: false,
+      zoom: 1.0,
+      label: {
+        normal: {
+          show: true,
+          fontSize: '10',
+          color: 'rgba(0,0,0,0.7)',
+        },
+      },
+      itemStyle: {
+        normal: {
+          borderColor: 'rgba(0, 0, 0, 0.2)',
+          color: '#e0ffff',
+        },
+        emphasis: {
+          areaColor: '#34D39A',
+          shadowOffsetX: 0,
+          shadowOffsetY: 0,
+          shadowBlur: 20,
+          borderWidth: 0,
+          shadowColor: 'rgba(0, 0, 0, 0.5)',
+        },
+      },
+    },
+    series: [
+      {
+        name: '籍贯分布',
+        type: 'map',
+        geoIndex: 0,
+        data: dataList,
+      },
+    ],
+  }
+  myEchart.setOption(option)
+}
+
