@@ -19,6 +19,22 @@ function loginIf() {
     },1500)
   }
 }
+
+async function dataRender() {
+  const token=localStorage.getItem('token')
+  const res= await axios({
+    url: '/dashboard',
+    // headers:
+    //   { Authorization: token }
+  })
+  console.log(res);
+  console.log(token);
+  const overview=res.data.data.overview
+  Object.keys(overview).forEach(ele => {
+    document.querySelector(`.${ele}`).innerText=overview[ele]
+  })
+}
+
 //Authorization
 axios.interceptors.request.use(function (config) {
   console.log(config);
@@ -27,5 +43,22 @@ axios.interceptors.request.use(function (config) {
   config.headers['Authorization'] = token
   return config
 }, function (error) {
+  return Promise.reject(error)
+})
+axios.interceptors.response.use(response => {
+
+  return response
+}, error => {
+  if (error.response.status === 401)
+  {
+    console.dir(error);
+    debugger
+    localStorage.removeItem('username')
+    localStorage.removeItem('token')
+    setTimeout(() => {
+      // login.html和index.html的相对关系
+     location.href='./login.js'
+    }, 1500)
+  }
   return Promise.reject(error)
 })
